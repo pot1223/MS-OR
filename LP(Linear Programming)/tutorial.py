@@ -1,6 +1,8 @@
 !pip install ortools
 from ortools.linear_solver import pywraplp # OR library 호출
 
+#solver = pywraplp.Solver.CreateSolver('GLOP')
+solver = pywraplp.Solver("Tutorial",pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
 
 # 결정변수 정의
 x = solver.NumVar(0, solver.infinity(), 'Study time for programming techniques') 
