@@ -1,6 +1,9 @@
 !pip install ortools
 from ortools.linear_solver import pywraplp # OR library 호출
 
+#solver = pywraplp.Solver.CreateSolver('GLOP')
+solver = pywraplp.Solver("A vitamin diet problem",pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
+
 # 사용되는 데이터 
 vitamin_list = [
     ['Vitamin A (100IU)' ,50],
