@@ -28,3 +28,39 @@
 # 목적함수 
 
 # max Z = 3*x1 + 10*x2 + 5*x3 + 5*x4 + 15*x5
+
+!pip install ortools
+from ortools.linear_solver import pywraplp
+
+solver = pywraplp.Solver.CreateSolver('SCIP') # SCIP solver는 integer programming 때 사용, GLOP은 LP일 때 사용
+
+actives = [
+    'emoticon',
+    'restaurant',
+    'cafe',
+    'bicycle',
+    'home',
+          ]
+
+infy = solver.infinity()
+x = [solver.IntVar(0,infy,active) for active in actives]
+
+
+solver.Add(x[0]+2*x[1]+x[2]+x[3]+2*x[4] <= 16)
+solver.Add(20000*x[1]+10000*x[2]+2000*x[3]+5000*x[4] <= 70000)
+solver.Add(x[0]<=5)
+solver.Add(x[1]<=3)
+solver.Add(x[2]<=3)
+solver.Add(x[4]<=1)
+
+solver.Maximize(3*x[0]+10*x[1]+5*x[2]+5*x[3]+15*x[4])
+
+status = solver.Solve()
+print(pywraplp.Solver.OPTIMAL)
+if status == pywraplp.Solver.OPTIMAL:
+  print("Solution:")
+  print("Objective vaule = ", solver.Objective().Value())
+  for i in range(len(x)):
+    print(f"x{i+1} =", x[i].solution_value())
+else:
+  print("The problem does not have an optimal solution")
