@@ -27,10 +27,13 @@ s = {}
 for i in depot:
   for j in center:
     s[i, j] = solver.IntVar(0, solver.infinity(), "")
-    
+d= {}
+for i in depot:
+  d[i] = solver.IntVar(0, 1, "")
+
 # constraints
 for i in depot:
-  solver.Add(solver.Sum([s[i, j] for j in center]) <= capacity[i-1])
+  solver.Add(solver.Sum([s[i, j] for j in center]) <= capacity[i-1]*d[i])
 
 for j in center:
   solver.Add(solver.Sum([s[i, j] for i in depot]) >= demand[j-1])
@@ -38,9 +41,24 @@ for j in center:
 for i in depot:
   for j in center:
     solver.Add(s[i, j] <= demand[j-1]*x[i, j]) # x[i, j] 가 0 이면 s[i, j]도 0이다
-    
+ 
+# objective function
 objective_terms =[]
 for i in depot:
   for j in center:
     objective_terms.append(s[i, j] * cost[i-1][j-1])
-    # objective_terms.append(x[i,j]* construction[i-1])  고정 건설 비용을 어떻게 활용해야 할지 모르겠음 
+for i in depot:
+  objective_terms.append(d[i]*construction[i-1])
+solver.Minimize(solver.Sum(objective_terms))
+
+# run 
+status = solver.Solve()
+if status == pywraplp.Solver.OPTIMAL or status == pywraplp.Solver.FEASIBLE:
+  print("Total cost= ", solver.Objective().Value())
+  for i in depot:
+    for j in center:
+      if s[i,j].solution_value() > 0:
+        print("depot %d assigned to center %d. Amount = %d" % (i, j , s[i, j].solution_value()))
+else:
+  print("No solution found.")
+
