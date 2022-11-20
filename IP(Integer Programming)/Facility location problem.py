@@ -3,7 +3,7 @@ from ortools.linear_solver import pywraplp
 
 # data
 depot = [1, 2, 3, 4, 5]
-center = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+center = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 construction = [1000, 500, 1500, 300, 800]
 capacity =[200, 105, 400, 50, 500]
 cost = [
