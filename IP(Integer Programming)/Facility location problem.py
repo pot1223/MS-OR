@@ -62,3 +62,19 @@ if status == pywraplp.Solver.OPTIMAL or status == pywraplp.Solver.FEASIBLE:
 else:
   print("No solution found.")
 
+# run 2 
+status = solver.Solve()
+if status == pywraplp.Solver.OPTIMAL : 
+  print("Total cost = ", solver.Objective().Value())
+  for i in depot:
+    print("\n\nDEPOT", i)
+    f = 0
+    for j in center:
+      if s[i, j].solution_value != 0 :
+        print('    to CENTER %i :' % (j), s[i,j].solution_value())
+      f += s[i,j].solution_value() * cost[i-1][j-1]
+    if d[i].solution_value() != 0 :
+      print("\n  Construction cost :", d[i].solution_value() * construction[i-1])
+      print("    Shipping cost:", f)
+else:
+  print("The problem does not have an optimal solution.")
