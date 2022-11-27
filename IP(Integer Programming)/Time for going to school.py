@@ -31,6 +31,7 @@ for k in range(2,8):
 
 solver.Add((solver.Sum(x[8,j] for j in depart) - solver.Sum(x[i,8] for i in arrival)) == -1 ) # 도착지 조건 (유출량 - 유입량 = -1)
 
+# solver.Add(x[6,7]+x[7,6] >= 1) 아래 두 조건을 이 한줄로 표현 가능하다 
 solver.Add(solver.Sum(x[i,6] for i in arrival) == 1) # 6번 도착지는 무조건 들려야 한다 
 solver.Add(solver.Sum(x[i,7] for i in arrival) == 1) # 7번 도착지는 무조건 들려야 한다 
 
